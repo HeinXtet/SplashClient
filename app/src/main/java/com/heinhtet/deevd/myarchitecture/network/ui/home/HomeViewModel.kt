@@ -7,6 +7,7 @@ import android.os.Handler
 import com.heinhtet.deevd.myarchitecture.network.data.DataService
 import com.heinhtet.deevd.myarchitecture.network.base.baseutils.RxThread
 import com.heinhtet.deevd.myarchitecture.network.model.response.GithubUser
+import com.heinhtet.deevd.myarchitecture.network.network.ApiManager
 import com.heinhtet.deevd.myarchitecture.network.network.NetworkState
 import io.reactivex.rxkotlin.subscribeBy
 
@@ -14,8 +15,6 @@ import io.reactivex.rxkotlin.subscribeBy
  * Created by Hein Htet on 8/22/18.
  */
 class HomeViewModel(var dataService: DataService) : ViewModel() {
-
-
     var gitHubUserList = MutableLiveData<List<GithubUser>>()
     var networkStates = MutableLiveData<NetworkState>()
 
@@ -38,21 +37,24 @@ class HomeViewModel(var dataService: DataService) : ViewModel() {
     init {
         fetchUser()
     }
-
-
     private fun fetchUser() {
-        var networkError = MutableLiveData<State>()
-        networkStates.postValue(NetworkState.haha("HAHA init Changes"))
-        isMyanmarLanguage.postValue(false)
-        Handler().postDelayed({ isMyanmarLanguage.postValue(true) }, 2000)
-        dataService.getGithubUser()
-                .compose(RxThread.applyAsync())
-                .subscribeBy(onError = {
-                    networkStates.postValue(NetworkState.error("${it.localizedMessage}"))
-                    networkError.postValue(com.heinhtet.deevd.myarchitecture.network.ui.home.State("DATA ERROR ", it.localizedMessage))
-
-                }, onSuccess = {
-                    gitHubUserList.postValue(it)
-                })
+        ApiManager.request(dataService.getGithubUser(),
+                loading = {
+                    networkStates.postValue(NetworkState.LOADING)
+                }, success = {
+            networkStates.postValue(NetworkState.LOADED)
+            gitHubUserList.postValue(it)
+        }, error = { type, message ->
+            networkStates.postValue(NetworkState.error(message))
+        })
+//        isMyanmarLanguage.postValue(false)
+//        Handler().postDelayed({ isMyanmarLanguage.postValue(true) }, 2000)
+//        dataService.getGithubUser()
+//                .compose(RxThread.applyAsync())
+//                .subscribeBy(onError = {
+//                    networkStates.postValue(NetworkState.error("${it.localizedMessage}"))
+//                }, onSuccess = {
+//                    gitHubUserList.postValue(it)
+//                })
     }
 }

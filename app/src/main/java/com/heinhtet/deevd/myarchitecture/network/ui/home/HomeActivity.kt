@@ -41,6 +41,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun addObserver() {
         viewModel.getNetworkState().observe(this, Observer<NetworkState> {
+
+            when (it){
+                NetworkState.LOADING ->{
+
+                }
+                NetworkState.LOADED->{
+
+                }
+            }
+
             Log.i(TAG, " network state ${it?.message}")
         })
         viewModel.testingObserve().observe(this, Observer<Boolean> {

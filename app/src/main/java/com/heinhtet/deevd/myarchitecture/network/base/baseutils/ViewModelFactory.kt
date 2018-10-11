@@ -12,7 +12,7 @@ import com.heinhtet.deevd.myarchitecture.network.ui.main.MainViewModel
 class ViewModelFactory(private val dataManager: DataService) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
+            @Suppress("UNCHECKED_ CAST")
             return MainViewModel(dataManager) as T
         } else if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(dataManager) as T
