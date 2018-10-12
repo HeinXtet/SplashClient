@@ -48,9 +48,14 @@ class AuthorizationActivity : BaseActivity() {
         authViewModel.oauth.observe(this, Observer {
             if (it != null) {
                 L.i(TAG, "success OAuth $it")
+                authViewModel.getMe(it.accessToken)
             }
         })
-
+        authViewModel.userModel.observe(this, Observer {
+            if (it != null) {
+                L.i(TAG, "success Me $it")
+            }
+        })
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -89,11 +94,13 @@ class AuthorizationActivity : BaseActivity() {
             }
             return false
         }
+
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             progressBar.visibility = View.VISIBLE
             progressBar.progress = 0
         }
+
         override fun onPageFinished(view: WebView?, url: String) {
             super.onPageFinished(view, url)
             progressBar.visibility = View.GONE
@@ -102,7 +109,7 @@ class AuthorizationActivity : BaseActivity() {
             if (url.contains("$REDIRTECT_URI?code")) {
                 val code = AUTH_REGEX.matchEntire(url)?.groups?.get(2)?.value
                 if (code != null) {
-                    authViewModel.oAuth(code )
+                    authViewModel.oAuth(code)
                 }
             }
         }

@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit
 class ProvideRetrofit {
     private fun getOkHttpClient(context: Context): OkHttpClient {
         val client = OkHttpClient.Builder()
-
-
         if (BuildConfig.L_ENABLE) {
             client.addInterceptor(ChuckInterceptor(context))
         }
@@ -38,6 +36,7 @@ class ProvideRetrofit {
     }
 
     fun RetrofitBuilder(context: Context): Retrofit {
+
         return Retrofit
                 .Builder()
                 .baseUrl(BASE_URL)
