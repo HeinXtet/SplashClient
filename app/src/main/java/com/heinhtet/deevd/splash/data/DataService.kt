@@ -4,6 +4,7 @@ import android.content.Context
 import com.heinhtet.deevd.splash.api.ApiService
 import com.heinhtet.deevd.splash.base.baseutils.ACCESS_KEY
 import com.heinhtet.deevd.splash.base.baseutils.API_KEY
+import com.heinhtet.deevd.splash.base.baseutils.REDIRTECT_URI
 import com.heinhtet.deevd.splash.base.baseutils.SECRET_KEY
 import com.heinhtet.deevd.splash.model.response.GithubUser
 import com.heinhtet.deevd.splash.model.response.MovieResult
@@ -16,12 +17,7 @@ import io.reactivex.Single
  */
 
 class DataService(var context: Context) {
-    private var apiService: ApiService
-
-    init {
-        var provideApiService = ProvideApiService()
-        apiService = provideApiService.createApiService(context)
-    }
+    private var apiService: ApiService = ProvideApiService().createApiService(context)
 
     fun getPopularMovie(page: Int): Single<MovieResult> {
         return apiService.getPopularList(API_KEY, page)
@@ -32,6 +28,6 @@ class DataService(var context: Context) {
     }
 
     fun oAuth(code: String): Single<OAuthModel> {
-        return apiService.oAuth(ACCESS_KEY, SECRET_KEY, "https://www.google.com", code, "authorization_code")
+        return apiService.oAuth(ACCESS_KEY, SECRET_KEY, REDIRTECT_URI, code, "authorization_code")
     }
 }

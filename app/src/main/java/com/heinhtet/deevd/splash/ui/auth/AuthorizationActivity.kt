@@ -89,19 +89,17 @@ class AuthorizationActivity : BaseActivity() {
             }
             return false
         }
-
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
             progressBar.visibility = View.VISIBLE
             progressBar.progress = 0
         }
-
         override fun onPageFinished(view: WebView?, url: String) {
             super.onPageFinished(view, url)
             progressBar.visibility = View.GONE
             progressBar.progress = 100
             L.i(TAG, " url loading finished $url")
-            if (url.contains("https://www.google.com/?code")) {
+            if (url.contains("$REDIRTECT_URI?code")) {
                 val code = AUTH_REGEX.matchEntire(url)?.groups?.get(2)?.value
                 if (code != null) {
                     authViewModel.oAuth(code )
