@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.heinhtet.deevd.splash.data.DataService
 import com.heinhtet.deevd.splash.ui.auth.AuthViewModel
-import com.heinhtet.deevd.splash.ui.home.HomeViewModel
+import com.heinhtet.deevd.splash.ui.home_test.HomeViewModel
 import com.heinhtet.deevd.splash.ui.main.MainViewModel
 
 /**

@@ -1,4 +1,4 @@
-package com.heinhtet.deevd.splash.ui.home
+package com.heinhtet.deevd.splash.ui.home_test
 
 import android.arch.lifecycle.MutableLiveData
 import com.heinhtet.deevd.splash.model.response.GithubUser

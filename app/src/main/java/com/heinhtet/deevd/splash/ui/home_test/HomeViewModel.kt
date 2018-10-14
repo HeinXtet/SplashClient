@@ -1,4 +1,4 @@
-package com.heinhtet.deevd.splash.ui.home
+package com.heinhtet.deevd.splash.ui.home_test
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
@@ -36,7 +36,7 @@ class HomeViewModel(var dataService: DataService) : ViewModel() {
     private fun fetchUser() {
         ApiManager.request(dataService.getGithubUser(),
                 loading = {
-                    networkStates.postValue(NetworkState.LOADING)
+                    networkStates.postValue(it)
                 }, success = {
             networkStates.postValue(NetworkState.LOADED)
             gitHubUserList.postValue(it)

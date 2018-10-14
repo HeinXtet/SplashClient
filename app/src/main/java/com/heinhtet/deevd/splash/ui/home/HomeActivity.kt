@@ -1,64 +1,123 @@
 package com.heinhtet.deevd.splash.ui.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.support.design.widget.NavigationView
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.AppCompatImageView
+import android.support.v7.widget.Toolbar
+import android.view.MenuItem
+import butterknife.BindView
 import com.heinhtet.deevd.splash.R
-import com.heinhtet.deevd.splash.base.baseutils.Injection
-import com.heinhtet.deevd.splash.model.response.GithubUser
-import com.heinhtet.deevd.splash.network.NetworkState
-import com.heinhtet.deevd.splash.utils.locale.LocaleHelper
+import com.heinhtet.deevd.splash.base.baseview.BaseActivity
+import com.heinhtet.deevd.splash.extensions.load
+import com.heinhtet.deevd.splash.model.response.UserModel
+import com.heinhtet.deevd.splash.utils.Auth.Auth
+import com.heinhtet.deevd.splash.utils.view.ViewHelper
+import kotlinx.android.synthetic.main.activity_home.*
+import android.view.WindowManager
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.View.SYSTEM_UI_FLAG_VISIBLE
+import android.os.Build
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.support.design.widget.AppBarLayout
+import android.view.View
+import com.heinhtet.deevd.splash.extensions.h
 import com.heinhtet.deevd.splash.utils.log.L
+import kotlinx.android.synthetic.main.toolbar_layout.*
+
 
 /**
- * Created by Hein Htet on 8/22/18.
+ * Created by Hein Htet on 10/13/18.
  */
+class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-class HomeActivity : AppCompatActivity() {
+    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+        return true
+    }
 
-    private lateinit var viewModel: HomeViewModel
-    private val TAG = "HomeActivity "
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var viewHelper: ViewHelper
+    private val TAG = " HomeActivity : "
+    @BindView(R.id.toolbar)
+    lateinit var toolbar: Toolbar
+    @BindView(R.id.drawer_layout)
+    lateinit var drawerLayout: DrawerLayout
+    @BindView(R.id.nav_view)
+    lateinit var navView: NavigationView
+    @BindView(R.id.profile_iv)
+    lateinit var profileIv: AppCompatImageView
+    @BindView(R.id.appbar)
+    lateinit var appbar: AppBarLayout
+    private lateinit var userModel: UserModel
 
+
+    override fun getLayoutId() = R.layout.activity_home
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        LocaleHelper.setLocale(this, LocaleHelper.getMultiMM(this))
-
-        viewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this)).get(
-                HomeViewModel::class.java
-        )
-        addObserver()
-        L.i(message = this.getString(R.string.Project))
+        initComponents()
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        LocaleHelper.onAttach(this)
+    override fun onStart() {
+        super.onStart()
     }
 
-    private fun addObserver() {
-        viewModel.getNetworkState().observe(this, Observer<NetworkState> {
+    private fun initComponents() {
+        viewHelper = ViewHelper(this)
+        viewHelper.initStatusBar(this, toolbar = toolbar)
+        toggle = ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        navView.setNavigationItemSelectedListener(this)
+        if (Auth.hasAuth()) {
+            initAuthState()
+        }
+        scrollChange()
+    }
 
-            when (it){
-                NetworkState.LOADING ->{
+    @SuppressLint("ObsoleteSdkInt")
+    private fun scrollChange() {
+        L.i(TAG, "Toolbar Height ${viewHelper.getToolBarHeight()} appbar height ${appbar.height}")
+        appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) == appBarLayout.totalScrollRange) {
+                // Collapsed
+                this.appbar.animate().translationY(0f).start()
+                this.nestedScrollView.setPadding(0, 0, 0, 0)
+                this.drawerLayout.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_FULLSCREEN //this one changed
 
+            } else if (verticalOffset == 0) {
+                // Fully Expanded - show the status bar
+                if (Build.VERSION.SDK_INT >= 16) {
+                    this.nestedScrollView.setPadding(0, viewHelper.convertDpToPixel(16f).toInt(), 0, 0)
+                    this.appbar.animate().translationY(56f).start()
+                    drawerLayout.systemUiVisibility = (View.SYSTEM_UI_FLAG_VISIBLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 }
-                NetworkState.LOADED->{
-
-                }
+            } else {
+                // Somewhere in between
+                // We could optionally dim icons in this step by adding the flag:
+                // View.SYSTEM_UI_FLAG_LOW_PROFILE
             }
+        })
+    }
 
-            Log.i(TAG, " network state ${it?.message}")
-        })
-        viewModel.testingObserve().observe(this, Observer<Boolean> {
-            Log.i(TAG, " is MM language  ${it}")
-        })
+    private fun initAuthState() {
+        userModel = Auth.getUserModel()
+        profileIv.load(R.drawable.pp, true)
+    }
 
-        viewModel.gitHubUserList.observe(this, Observer<List<GithubUser>> {
-            Log.i(TAG, " GITHUB userList ${it.toString()}")
-        })
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }

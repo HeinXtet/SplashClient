@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Splash Client</string>
     <string name="Project">English</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="loream" translatable="false">did you check link which i mention in question – Aditya Aug 7 \'15 at 6:14 2 No able to open getting 502 Bad Gateway error. – Anand Singh Aug 7 \'15 at 6:15 anyway you can check this github.com/codepath/android_guides/wiki/… link. It have good tutorial. – Anand Singh Aug 7 \'15 at 6:16 1 thats is the same code i am u… link. It have good tutorial. – Anand Singh Aug 7 \'15 at 6:16 1 thats is the same code i am u… link. It have good tutorial. – Anand Singh Aug 7 \'15 at 6:16 1 thats is the same code i am u… link. It have good tutorial. – Anand Singh Aug 7 \'15 at 6:16 1 thats is the same code i am using – Aditya Aug 7 \'15 at 6:20 so write above code in your MainActivity , it will work. – Anand Singh Aug 7 \'15 at 6:21did you check link which i mention in question – Aditya Aug 7 \'15 at 6:14 2 No able to open getting 502 Bad Gateway error. – Anand Singh Aug 7 \'15 at 6:15 anyway you can check this github.com/codepath/android_guides/wiki/… link. It have good tutorial. – Anand Singh Aug 7 \'15 at 6:16 1 thats is the same code i am using – Aditya Aug 7 \'15 at 6:20 so write above code in your MainActivity , it will work. – Anand Singh Aug 7 \'15 at 6:21</string>
 </resources>

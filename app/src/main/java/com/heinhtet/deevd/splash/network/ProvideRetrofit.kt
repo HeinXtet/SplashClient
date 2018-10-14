@@ -36,7 +36,6 @@ class ProvideRetrofit {
     }
 
     fun RetrofitBuilder(context: Context): Retrofit {
-
         return Retrofit
                 .Builder()
                 .baseUrl(BASE_URL)

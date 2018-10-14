@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.heinhtet.deevd.splash.model.response.UserModel
 
 /**
  * Created by Hein Htet on 8/23/18.
@@ -14,6 +15,8 @@ class PrefHelper {
     private lateinit var sharePref: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
     private val Language = "lan"
+    private val USER_MODEL = "UserModel"
+    private val HAS_AUTH = "already_login"
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -59,5 +62,20 @@ class PrefHelper {
         return Gson().fromJson<Any>(sharePref.getString("OBJ", ""), Any::class.java)
     }
 
+    fun setUserModel(model: UserModel) {
+        editor.putString(USER_MODEL, Gson().toJson(model)).apply()
+    }
+
+    fun getUserModel(): UserModel {
+        return Gson().fromJson<UserModel>(sharePref.getString(USER_MODEL, ""), UserModel::class.java)
+    }
+
+    fun hasAuth(): Boolean {
+        return sharePref.getBoolean(HAS_AUTH, false)
+    }
+
+    fun setAuth(isAuth: Boolean) {
+        editor.putBoolean(HAS_AUTH, isAuth).apply()
+    }
 
 }

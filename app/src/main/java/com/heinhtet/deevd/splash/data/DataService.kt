@@ -1,6 +1,7 @@
 package com.heinhtet.deevd.splash.data
 
 import android.content.Context
+import com.heinhtet.deevd.splash.BuildConfig
 import com.heinhtet.deevd.splash.api.ApiService
 import com.heinhtet.deevd.splash.base.baseutils.*
 import com.heinhtet.deevd.splash.model.response.GithubUser
@@ -27,7 +28,7 @@ class DataService(var context: Context) {
     }
 
     fun oAuth(code: String): Single<OAuthModel> {
-        val OAUTH = "https://unsplash.com/oauth/token?client_id=$ACCESS_KEY&client_secret=$SECRET_KEY&redirect_uri=$REDIRTECT_URI&code=$code&grant_type=authorization_code"
+        val OAUTH = "https://unsplash.com/oauth/token?client_id=${BuildConfig.AccessKey}&client_secret=${BuildConfig.SecretKey}&redirect_uri=$REDIRTECT_URI&code=$code&grant_type=authorization_code"
         return apiService.oAuth(OAUTH)
     }
 

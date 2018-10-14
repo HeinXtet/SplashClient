@@ -40,6 +40,8 @@ android {
     buildTypes {
         buildTypes.each {
             it.buildConfigField 'Boolean', 'L_ENABLE', L_ENABLE
+            it.buildConfigField 'String' , "AccessKey", AccessKey
+            it.buildConfigField 'String' , "SecretKey", SecretKey
 
         }
         release {

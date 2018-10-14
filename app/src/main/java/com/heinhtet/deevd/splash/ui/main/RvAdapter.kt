@@ -2,6 +2,7 @@ package com.heinhtet.deevd.splash.ui.main
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -86,7 +87,7 @@ class RvAdapter(private val retryCallback: () -> Unit) : PagedListAdapter<Movie,
         @BindView(R.id.title_tv)
         lateinit var title: TextView
         @BindView(R.id.iv)
-        lateinit var iv: ImageView
+        lateinit var iv: AppCompatImageView
 
         init {
             ButterKnife.bind(this, itemView)
