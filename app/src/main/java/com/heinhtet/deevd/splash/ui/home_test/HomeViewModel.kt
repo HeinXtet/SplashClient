@@ -41,7 +41,7 @@ class HomeViewModel(var dataService: DataService) : ViewModel() {
             networkStates.postValue(NetworkState.LOADED)
             gitHubUserList.postValue(it)
         }, error = { type, message ->
-            networkStates.postValue(NetworkState.error(message.localizedMessage))
+            networkStates.postValue(NetworkState.error(message.localizedMessage,Throwable()))
         })
 //        isMyanmarLanguage.postValue(false)
 //        Handler().postDelayed({ isMyanmarLanguage.postValue(true) }, 2000)

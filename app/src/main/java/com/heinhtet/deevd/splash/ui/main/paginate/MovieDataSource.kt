@@ -17,7 +17,6 @@ import io.reactivex.schedulers.Schedulers
  * Created by Hein Htet on 8/21/18.
  */
 
-val TAG = "DataSoruce"
 
 class MovieDataSource(
         private val dataService: DataService,
@@ -26,6 +25,8 @@ class MovieDataSource(
     override fun loadBefore(params: LoadParams<Long>, callback: LoadCallback<Long, Movie>) {
 
     }
+    val TAG = "DataSoruce"
+
 
     val networkState = MutableLiveData<NetworkState>()
 
@@ -69,7 +70,7 @@ class MovieDataSource(
         }, { throwable ->
             // keep a Completable for future retry
             setRetry(Action { loadInitial(params, callback) })
-            val error = NetworkState.error(throwable.message)
+            val error = NetworkState.error(throwable.message,throwable)
             // publish the error
             networkState.postValue(error)
             initialLoad.postValue(error)
@@ -92,7 +93,7 @@ class MovieDataSource(
             // keep a Completable for future retry
             setRetry(Action { loadAfter(params, callback) })
             // publish the error
-            networkState.postValue(NetworkState.error(throwable.message))
+            networkState.postValue(NetworkState.error(throwable.message,throwable))
         }))
     }
 

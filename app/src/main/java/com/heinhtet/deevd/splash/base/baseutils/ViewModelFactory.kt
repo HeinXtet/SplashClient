@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.heinhtet.deevd.splash.data.DataService
 import com.heinhtet.deevd.splash.ui.auth.AuthViewModel
+import com.heinhtet.deevd.splash.ui.home_fragment.paginate.HomeFragmentViewModel
 import com.heinhtet.deevd.splash.ui.home_test.HomeViewModel
 import com.heinhtet.deevd.splash.ui.main.MainViewModel
 
@@ -19,7 +20,9 @@ class ViewModelFactory(private val dataManager: DataService) : ViewModelProvider
             return HomeViewModel(dataManager) as T
         }else if (modelClass.isAssignableFrom(AuthViewModel::class.java)){
             return AuthViewModel(dataManager) as T
-
+            }
+        else if (modelClass.isAssignableFrom(HomeFragmentViewModel::class.java)){
+            return HomeFragmentViewModel(dataManager) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

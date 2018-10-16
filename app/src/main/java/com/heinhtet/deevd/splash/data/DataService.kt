@@ -4,10 +4,7 @@ import android.content.Context
 import com.heinhtet.deevd.splash.BuildConfig
 import com.heinhtet.deevd.splash.api.ApiService
 import com.heinhtet.deevd.splash.base.baseutils.*
-import com.heinhtet.deevd.splash.model.response.GithubUser
-import com.heinhtet.deevd.splash.model.response.MovieResult
-import com.heinhtet.deevd.splash.model.response.OAuthModel
-import com.heinhtet.deevd.splash.model.response.UserModel
+import com.heinhtet.deevd.splash.model.response.*
 import com.heinhtet.deevd.splash.network.ProvideApiService
 import io.reactivex.Single
 
@@ -34,5 +31,13 @@ class DataService(var context: Context) {
 
     fun getMe(token: String): Single<UserModel> {
         return apiService.getMe(BEARER + token)
+    }
+
+    fun getPhotos(token: String, page: Int) :Single<List<PhotoModel>>{
+        return apiService.getPhotos(getToken(token), page, 10, LATEST)
+    }
+
+    private fun getToken(token: String): String {
+        return BEARER + token
     }
 }

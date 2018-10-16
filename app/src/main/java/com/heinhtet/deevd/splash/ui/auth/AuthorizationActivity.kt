@@ -57,6 +57,7 @@ class AuthorizationActivity : BaseActivity() {
         authViewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this)).get(AuthViewModel::class.java)
         authViewModel.oauth.observe(this, Observer {
             if (it != null) {
+                PrefHelper.instance().setOAuthModel(it)
                 authViewModel.getMe(it.accessToken)
             }
         })

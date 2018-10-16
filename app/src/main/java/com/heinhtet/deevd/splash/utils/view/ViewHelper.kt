@@ -2,7 +2,11 @@ package com.heinhtet.deevd.splash.utils.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
+import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatImageView
+import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.heinhtet.deevd.splash.extensions.h
@@ -12,8 +16,12 @@ import com.heinhtet.deevd.splash.utils.log.L
 import android.view.ViewGroup
 import android.util.TypedValue
 import android.util.DisplayMetrics
-
-
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import com.heinhtet.deevd.splash.R
+import com.heinhtet.deevd.splash.extensions.load
+import com.heinhtet.deevd.splash.model.response.UserModel
+import kotlinx.android.synthetic.main.profile_header.view.*
 
 
 /**
@@ -39,11 +47,35 @@ class ViewHelper(private val context: Context) {
         }
     }
 
+    inner class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(outRect: Rect, view: View,
+                                    parent: RecyclerView, state: RecyclerView.State) {
+            outRect.left = space
+            outRect.right = space
+            outRect.bottom = space
+
+            // Add top margin only for the first item to avoid double space between items
+            if (parent.getChildLayoutPosition(view) == 0) {
+                outRect.top = space
+            } else {
+                outRect.top = 0
+            }
+        }
+    }
+
+    fun setUpNavigationProfileHeader( navigationView: NavigationView, userModel: UserModel) {
+        if (navigationView.headerCount>0){
+            val view = navigationView.getHeaderView(0)
+            view.findViewById<AppCompatImageView>(R.id.nav_profile_iv).load(userModel.links.photos, true, false)
+            view.findViewById<AppCompatTextView>(R.id.nav_user_email).text = userModel.email
+            view.findViewById<AppCompatTextView>(R.id.nav_user_name_tv).text = userModel.userName
+        }
+    }
+
     fun initStatusBar(activity: AppCompatActivity, toolbar: Toolbar) {
         activity.setSupportActionBar(toolbar)
-
-        activity.supportActionBar?.title = ""
-
+        activity.supportActionBar?.title = "DatPone"
     }
 
     fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {

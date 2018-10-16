@@ -12,3 +12,6 @@ val BASE_IV_URL = "https://unsplash.com/"
 val AUTH_REGEX = "https:\\/\\/(.*)\\/?code=(.*)".toRegex()
 val REDIRTECT_URI = "https://heinxtet.github.io/github.splash/"
 val AUTH_URL = "https://unsplash.com/oauth/authorize?client_id=${BuildConfig.AccessKey}&redirect_uri=$REDIRTECT_URI&response_type=code&scope=public+read_user"
+val LATEST = "latest"
+val OLDEST = "oldest"
+val POPULAR = "popular"

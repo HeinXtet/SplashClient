@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginTop="24dp">
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/nav_profile_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/pp"
+        app:layout_constraintDimensionRatio="h,1:0.7"
+        app:layout_constraintEnd_toStartOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="mgheinhtet@gmail.com"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/nav_user_email"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_profile_iv" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/nav_user_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:text="Hein Htet"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/nav_profile_iv" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+
+</android.support.constraint.ConstraintLayout>

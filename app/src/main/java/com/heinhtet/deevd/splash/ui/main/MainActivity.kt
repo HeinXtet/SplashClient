@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         adapter = RvAdapter {
             viewModel.retry()
         }
-        var layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
         rv.layoutManager = layoutManager
         rv.adapter = adapter
     }

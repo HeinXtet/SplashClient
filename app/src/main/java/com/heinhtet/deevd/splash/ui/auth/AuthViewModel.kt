@@ -8,7 +8,6 @@ import com.heinhtet.deevd.splash.model.response.OAuthModel
 import com.heinhtet.deevd.splash.model.response.UserModel
 import com.heinhtet.deevd.splash.network.ApiManager
 import com.heinhtet.deevd.splash.network.NetworkState
-import com.heinhtet.deevd.splash.ui.main.paginate.TAG
 import com.heinhtet.deevd.splash.utils.log.L
 import io.reactivex.Single
 

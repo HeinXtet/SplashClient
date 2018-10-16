@@ -1,6 +1,7 @@
 package com.heinhtet.deevd.splash.ui.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -24,8 +25,10 @@ import android.view.View.SYSTEM_UI_FLAG_VISIBLE
 import android.os.Build
 import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.support.design.widget.AppBarLayout
+import android.support.v7.widget.AppCompatTextView
 import android.view.View
 import com.heinhtet.deevd.splash.extensions.h
+import com.heinhtet.deevd.splash.ui.home_fragment.HomeFragment
 import com.heinhtet.deevd.splash.utils.log.L
 import kotlinx.android.synthetic.main.toolbar_layout.*
 
@@ -56,13 +59,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
     override fun getLayoutId() = R.layout.activity_home
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initComponents()
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     private fun initComponents() {
@@ -77,23 +78,48 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             initAuthState()
         }
         scrollChange()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
     }
+
+    override fun onResume() {
+        super.onResume()
+        window.decorView.setOnSystemUiVisibilityChangeListener { visibility ->
+            // Note that system bars will only be "visible" if none of the
+            // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
+            if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0) {
+                hideSystemUI()
+            }
+        }
+        hideSystemUI()
+    }
+
+    private fun hideSystemUI() {
+        if (resources.getBoolean(R.bool.is_land)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE)
+            }
+        }
+    }
+
 
     @SuppressLint("ObsoleteSdkInt")
     private fun scrollChange() {
-        L.i(TAG, "Toolbar Height ${viewHelper.getToolBarHeight()} appbar height ${appbar.height}")
         appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) == appBarLayout.totalScrollRange) {
                 // Collapsed
                 this.appbar.animate().translationY(0f).start()
                 this.nestedScrollView.setPadding(0, 0, 0, 0)
-                this.drawerLayout.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_FULLSCREEN //this one changed
+                this.drawerLayout.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_FULLSCREEN
 
             } else if (verticalOffset == 0) {
                 // Fully Expanded - show the status bar
                 if (Build.VERSION.SDK_INT >= 16) {
                     this.nestedScrollView.setPadding(0, viewHelper.convertDpToPixel(16f).toInt(), 0, 0)
-                    this.appbar.animate().translationY(56f).start()
+                    this.appbar.animate().translationY(54f).start()
                     drawerLayout.systemUiVisibility = (View.SYSTEM_UI_FLAG_VISIBLE
                             or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
@@ -101,9 +127,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 }
             } else {
-                // Somewhere in between
-                // We could optionally dim icons in this step by adding the flag:
-                // View.SYSTEM_UI_FLAG_LOW_PROFILE
             }
         })
     }
@@ -111,6 +134,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun initAuthState() {
         userModel = Auth.getUserModel()
         profileIv.load(R.drawable.pp, true)
+        viewHelper.setUpNavigationProfileHeader(navView,userModel)
+
     }
 
     override fun onBackPressed() {

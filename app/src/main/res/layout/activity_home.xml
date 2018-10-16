@@ -13,39 +13,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            layout="@layout/toolbar_layout" />
+        <include layout="@layout/toolbar_layout" />
 
-
-        <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.heinhtet.deevd.splash.utils.view.SmartNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:paddingTop="16dp"
             android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                />
 
-                <TextView
-                    android:id="@+id/textone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/loream"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
 
-                <com.heinhtet.deevd.splash.utils.view.CustomViewPager
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:swipe_orientation="vertical" />
-
-            </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        </com.heinhtet.deevd.splash.utils.view.SmartNestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -55,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:headerLayout="@layout/profile_header"
         android:fitsSystemWindows="true"
         app:menu="@menu/activity_main_drawer" />
 

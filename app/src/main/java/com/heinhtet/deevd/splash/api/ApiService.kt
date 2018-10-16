@@ -1,9 +1,6 @@
 package com.heinhtet.deevd.splash.api
 
-import com.heinhtet.deevd.splash.model.response.GithubUser
-import com.heinhtet.deevd.splash.model.response.MovieResult
-import com.heinhtet.deevd.splash.model.response.OAuthModel
-import com.heinhtet.deevd.splash.model.response.UserModel
+import com.heinhtet.deevd.splash.model.response.*
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -31,4 +28,10 @@ interface ApiService {
 
     @GET("me")
     fun getMe(@Header("Authorization") auth: String): Single<UserModel>
+
+    @GET("photos")
+    fun getPhotos(@Header("Authorization") auth: String,
+                  @Query("page") page: Int,
+                  @Query("per_page") perPage: Int,
+                  @Query("order_by") orderBy: String): Single<List<PhotoModel>>
 }

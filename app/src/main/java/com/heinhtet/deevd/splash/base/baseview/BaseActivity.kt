@@ -2,6 +2,7 @@ package com.heinhtet.deevd.splash.base.baseview
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import butterknife.ButterKnife
 
 /**
@@ -18,6 +19,15 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
         ButterKnife.bind(this)
+
+
     }
 
+
+
+    private fun showSystemUI() {
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    }
 }
